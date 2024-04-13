@@ -5,8 +5,6 @@ import views.patient.PatientService;
 
 public class PatientFactory {
 
-     
-
     public static PatientService createService(String facilityType) {
         if (facilityType.equalsIgnoreCase("hospital")) {
             return new HospitalPatientService();

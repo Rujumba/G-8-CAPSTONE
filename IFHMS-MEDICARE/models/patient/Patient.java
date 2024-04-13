@@ -15,7 +15,7 @@ public class Patient {
     private String doctorName;
 
     private String prescription;
-        
+
 public Patient() {
     this.id = UUID.randomUUID().toString();
 }
@@ -30,15 +30,19 @@ public Patient() {
 
     public String service;
 
-   
+
 public String getId() {
     return id;
 }
 
-      
+
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getFacilityType() {

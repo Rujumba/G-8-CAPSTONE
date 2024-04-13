@@ -7,17 +7,14 @@ import repository.accountRepositories.AccountReceivableRepository;
 import views.accountReconcilation.ReconciliationStrategy;
 
 import java.util.List;
+import java.util.Map;
 
 public class AccountReceivableService implements ReconciliationStrategy {
     private GeneralLedger generalLedger;
 
     private GeneralLedgerService generalLedgerService = new GeneralLedgerService();
 
-    private AccountReceivableRepository accountReceivableRepository = new AccountReceivableRepository();
-
-    public void init(){
-        generalLedgerService = new GeneralLedgerService();
-    }
+    private AccountReceivableRepository accountReceivableRepository = AccountReceivableRepository.getInstance();
 
     @Override
     public void reconcile(Object obj) {
@@ -45,35 +42,17 @@ public class AccountReceivableService implements ReconciliationStrategy {
     }
 
     public void saveToAccountsReceivable(AccountReceivable accountReceivable){
-        accountReceivable.setId("AR"+ accountReceivableRepository.getAllAccountReceivableEntries().size() + 1);
+        accountReceivable.setId("AR"+ accountReceivableRepository.getMapSize() + 1);
         accountReceivable.setReconciled(false);
-        accountReceivableRepository.addAccountReceivable(accountReceivable);
+        accountReceivableRepository.accountReceivablesList.put(accountReceivable.getId(),accountReceivable);
     }
 
-    public List<AccountReceivable> getAllAccountReceivableEntries(){
-        return accountReceivableRepository.getAllAccountReceivableEntries();
+    public Map<String, AccountReceivable> getAllAccountReceivableEntries(){
+        return accountReceivableRepository.accountReceivablesList;
     }
 
     public AccountReceivable getById(String id){
-        return accountReceivableRepository.getById(id);
+        return accountReceivableRepository.accountReceivablesList.get(id);
     }
 
-    /**
-     * Getters and Setters
-     */
-    public AccountReceivableRepository getAccountReceivableRepository() {
-        return accountReceivableRepository;
-    }
-
-    public void setAccountReceivableRepository(AccountReceivableRepository accountReceivableRepository) {
-        this.accountReceivableRepository = accountReceivableRepository;
-    }
-
-    public GeneralLedgerService getGeneralLedgerService() {
-        return generalLedgerService;
-    }
-
-    public void setGeneralLedgerService(GeneralLedgerService generalLedgerService) {
-        this.generalLedgerService = generalLedgerService;
-    }
 }

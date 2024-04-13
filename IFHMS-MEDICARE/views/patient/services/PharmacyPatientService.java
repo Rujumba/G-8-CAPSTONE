@@ -9,10 +9,6 @@ import views.patient.PatientService;
 
 public class PharmacyPatientService extends PatientService {
 
-
-
-
-
     @Override
     public void savePatient(Patient patient) {
         Scanner scanner = new Scanner(System.in);
@@ -26,9 +22,7 @@ public class PharmacyPatientService extends PatientService {
         patient.setFacilityType("PHARMACY");
          String patientId = patient.getId();
 
-
-addPatient(patientId, patient);
-
+         addPatient(patientId, patient);
 
     }
 

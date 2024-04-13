@@ -3,16 +3,21 @@ package views.patient;
 
 import java.util.Map;
 import java.util.Scanner;
+
+import models.account.AccountReceivable;
+import models.medicalService.MedicalService;
 import models.patient.Patient;
 import repository.PatientRepositories.PatientRepository;
+import repository.medicalServiceRepository.MedicalServices;
+import views.accountReconcilation.services.AccountReceivableService;
 import views.patient.services.PatientFactory;
 
 
 public class PatientView {
     private static Scanner scanner = new Scanner(System.in);
-    // PatientRepository patientRepository = new PatientRepository();
     private static PatientRepository patientRepository = PatientRepository.getInstance();
     Map<String, Patient> patientMap = patientRepository.patientsMap;
+    private static MedicalServices medicalServices = new MedicalServices();
 
     private static PatientService patientService;
 
@@ -20,15 +25,15 @@ public class PatientView {
 
         while (true) {
           System.out.println("\033[0;34m╔══════════════════════╗");
-System.out.println("║        Menu          ║");
-System.out.println("╠══════════════════════╣");
-System.out.println("║ 1. Register Patient  ║");
-System.out.println("║ 2. View Patients     ║");
-System.out.println("║ 3. Delete Patient    ║");
-System.out.println("║ 4. Assign Service    ║");
-System.out.println("║ 5. Exit              ║");
-System.out.println("╚══════════════════════╝");
-System.out.print("\033[0mEnter your choice: ");
+            System.out.println("║        Menu          ║");
+            System.out.println("╠══════════════════════╣");
+            System.out.println("║ 1. Register Patient  ║");
+            System.out.println("║ 2. View Patients     ║");
+            System.out.println("║ 3. Delete Patient    ║");
+            System.out.println("║ 4. Assign Service    ║");
+            System.out.println("║ 5. Exit              ║");
+            System.out.println("╚══════════════════════╝");
+            System.out.print("\033[0mEnter your choice: ");
 
             int choice;
             try {
@@ -64,7 +69,7 @@ System.out.print("\033[0mEnter your choice: ");
                                 patientService.savePatient(new Patient());
                                 break;
                             case 3:
-                                patientService = PatientFactory.createService("clinic");
+                                patientService = PatientFactory.createService("pharmacy");
                                 patientService.savePatient(new Patient());
                                 break;
                             default:
@@ -79,13 +84,13 @@ System.out.print("\033[0mEnter your choice: ");
 
                     break;
                 case 2:
-                    // List<Patient> patientsList = patientService.getAllPatients();
                     System.out.println("-------------------------Patients----------------------");
                     //create a table showing each patient details
 
-                    System.out.println("List size "+patientRepository.getMapSize());
-            
-               
+                    System.out.println("Patient ID\tPatient Name\tFacility Type");
+                    for(Patient patient: patientMap.values()){
+                        System.out.println(patient.getId()+"\t"+patient.getName()+"\t"+patient.getFacilityType());
+                    }
 
                     break;
                 case 3:
@@ -93,8 +98,45 @@ System.out.print("\033[0mEnter your choice: ");
                     deletePatient();
                     break;
                 case 4:
-                    System.out.println("You selected Assign Service");
-                    // Call method to handle assigning a service
+                    //i want to first display a list of the patients
+                    //then prompt the user to select a patient
+                    //then display a list of services and ask the user to select a service
+                    //then save the service to the patient
+                    System.out.println("-------------------------Assign Service----------------------");
+                    System.out.println("List of Patients:");
+                    for(Patient patient: patientMap.values()){
+                        System.out.println(patient.getId()+"\t"+patient.getName()+"\t"+patient.getFacilityType());
+                    }
+                    System.out.print("Enter the ID of the patient to assign service to: ");
+                    String patientId = scanner.nextLine();
+                    Patient patient = patientService.findPatientById(patientId);
+                    if(patient == null){
+                        System.out.println("Patient not found");
+                        break;
+                    }
+                    System.out.println("Select the service to assign to the patient");
+                    System.out.println("Service ID\tService Name\tService Price");
+                    for (MedicalService medicalService: medicalServices.memdicalServicesMap.values()){
+                        System.out.println(medicalService.getServiceId()+"\t"+medicalService.getServiceName()+"\t"+medicalService.getServicePrice());
+                    }
+
+                    System.out.print("Enter the ID of the service to assign to the patient: ");
+                    String serviceId = scanner.nextLine();
+                    MedicalService medicalService = medicalServices.memdicalServicesMap.get(serviceId);
+                    if(medicalService == null){
+                        System.out.println("Service not found");
+                        break;
+                    }
+                    patient.setService(medicalService.getServiceName());
+                    patientService.updatePatient(patient);
+
+                    AccountReceivable accountReceivable = new AccountReceivable();
+                    accountReceivable.setAmount(medicalService.getServicePrice());
+                    accountReceivable.setDescription(medicalService.getServiceName()+" to "+patient.getName());
+
+                    AccountReceivableService accountReceivableService = new AccountReceivableService();
+                    accountReceivableService.saveToAccountsReceivable(accountReceivable);
+
                     break;
                 case 5:
                     System.out.println("\nExiting...");

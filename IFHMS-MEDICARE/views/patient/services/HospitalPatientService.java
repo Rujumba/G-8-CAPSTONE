@@ -9,9 +9,6 @@ import views.patient.PatientService;
 
 public class HospitalPatientService extends PatientService {
 
-
-
-
     @Override
     public void savePatient(Patient patient) {
 
@@ -24,12 +21,9 @@ public class HospitalPatientService extends PatientService {
         patient.setDoctorName(scanner.nextLine());
 
         patient.setFacilityType("HOSPITAL");
-       String patientId = patient.getId();
+        String patientId = patient.getId();
 
-
-addPatient(patientId, patient);
-
-
+        addPatient(patientId, patient);
 
     }
 
