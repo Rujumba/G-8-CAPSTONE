@@ -26,12 +26,10 @@ public class AccountReceivableRepository {
         return accountReceivableRepository;
     }
 
-
     public int getMapSize() {
         return accountReceivablesList.size();
     }
-
-    //update a patient
+    
     public void updateAccountReceivable(AccountReceivable accountReceivable) {
         accountReceivablesList.put(accountReceivable.getId(), accountReceivable);
     }
