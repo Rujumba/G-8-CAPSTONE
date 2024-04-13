@@ -2,19 +2,22 @@ package repository.medicalServiceRepository;
 
 import models.medicalService.MedicalService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public class medicalServices {
+public class MedicalServices {
 
-    List<MedicalService> medicalServices = new ArrayList<>();
+    public Map<String, MedicalService> memdicalServicesMap;
 
-    public List<MedicalService> getMedicalServices(){
-        MedicalService medicalService = new MedicalService("Treatment", 5000);
-        medicalServices.add(medicalService);
-        MedicalService medicalService1 = new MedicalService("CheckUp", 10000);
-        medicalServices.add(medicalService1);
+    public MedicalServices(){
+        memdicalServicesMap = new HashMap<>();
+        addService("Medical Checkup", 10000.0);
+        addService("Vaccination", 50000.0);
+        addService("Dental Checkup", 20000.0);
+    }
 
-        return medicalServices;
+    private void addService(String serviceName, double servicePrice) {
+        String serviceId = "S" + (memdicalServicesMap.size() + 1);
+        memdicalServicesMap.put(serviceId, new MedicalService(serviceName, servicePrice, serviceId));
     }
 }

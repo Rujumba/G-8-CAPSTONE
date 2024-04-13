@@ -19,7 +19,7 @@ public class GeneralLedgerRepository {
     public void addGeneralLedger(GeneralLedger generalLedger) {
         String filename = "GeneralLedger2.dat";
 
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename, true))) {
             oos.writeObject(generalLedger);
             System.out.println("GeneralLedger object saved successfully.");
         } catch (IOException e) {

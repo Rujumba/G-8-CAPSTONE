@@ -14,7 +14,7 @@ public abstract class PatientService {
     Map<String, Patient> patientsMap = patientRepository.patientsMap;
 
     public void savePatient(Patient patient) {
-
+        patientsMap.put(patient.getId(), patient);
     }
 
     public Map<String, Patient> getPatientsMap() {

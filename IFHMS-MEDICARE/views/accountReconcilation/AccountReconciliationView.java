@@ -115,14 +115,12 @@ public class AccountReconciliationView {
                     case 5:
                         System.out.println("----------------Viewing Account Receivable Entries-----------------");
 
-                        List<AccountReceivable> accountReceivableEntries = accountReceivableService.getAllAccountReceivableEntries();
-
                         System.out.println("ID\t\tAmount\t\tDescription\t\tReconciled");
 
-                        if (accountReceivableEntries.isEmpty()) {
+                        if (accountReceivableService.getAllAccountReceivableEntries().isEmpty()) {
                             System.out.println("No account receivable entries found.");
                         } else {
-                            for (AccountReceivable accountReceivableEntry : accountReceivableEntries) {
+                            for (AccountReceivable accountReceivableEntry : accountReceivableService.getAllAccountReceivableEntries().values()) {
                                 System.out.println(accountReceivableEntry.getId() + "\t\t" + accountReceivableEntry.getAmount() + "\t\t" + accountReceivableEntry.getDescription() + "\t\t" + accountReceivableEntry.isReconciled());
                             }
                         }
