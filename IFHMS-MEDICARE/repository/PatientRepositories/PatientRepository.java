@@ -9,7 +9,7 @@ import models.patient.Patient;
 
 public class PatientRepository {
     private static PatientRepository repoSingleton = null;
-    private Map<String, Patient> patientsMap;
+    public Map<String, Patient> patientsMap;
 
     private PatientRepository() {
         patientsMap = new HashMap<>();
@@ -20,14 +20,6 @@ public class PatientRepository {
             repoSingleton = new PatientRepository();
         }
         return repoSingleton;
-    }
-
-    public Map<String, Patient> getPatientsMap() {
-        return patientsMap;
-    }
-
-    public void addPatient(String patientId, Patient patient) {
-        patientsMap.put(patientId, patient);
     }
 
 

@@ -4,12 +4,11 @@ package views.patient.services;
 import java.util.List;
 import java.util.Scanner;
 import models.patient.Patient;
-import repository.PatientRepositories.PatientRepository;
 import views.patient.PatientService;
 
 
 public class HospitalPatientService extends PatientService {
-    PatientRepository patientRepository = PatientRepository.getInstance();
+
 
 
 
@@ -28,7 +27,7 @@ public class HospitalPatientService extends PatientService {
        String patientId = patient.getId();
 
 
-patientRepository.addPatient(patientId, patient);
+addPatient(patientId, patient);
 
 
 

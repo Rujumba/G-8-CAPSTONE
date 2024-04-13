@@ -23,7 +23,7 @@ public class ClinicPatientService extends PatientService {
         String patientId = patient.getId();
 
 
-patientRepository.addPatient(patientId, patient);
+addPatient(patientId, patient);
         String message = patient.toString();
 
         System.out.print(message);
