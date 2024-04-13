@@ -1,8 +1,10 @@
+import java.util.Map;
 import java.util.Scanner;
 import models.systemUsers.SystemUser;
 import repository.systemUsersRepository.SystemUserRepository;
 import views.accountReconcilation.AccountReconciliationView;
 import views.logger.services.DebugLogger;
+import views.messages.ChatView;
 import views.patient.PatientView;
 import views.systemUser.services.SystemUserCreator;
 
@@ -12,6 +14,7 @@ public class MedicareLanding {
 
     public static void main(String[] args) {
         SystemUserRepository userRepository = SystemUserRepository.getInstance();
+        Map<String, SystemUser> users = userRepository.users;
 
 
 SystemUserCreator userCreator = SystemUserCreator.getSystemUserCreator();
@@ -44,6 +47,18 @@ Scanner scanner = new Scanner(System.in);
             }
 
         }
+        SystemUser adminUser = users.values().stream()
+            .filter(user -> user.getRole().equalsIgnoreCase("AD"))
+            .findFirst()
+            .orElse(null);
+
+        if (adminUser != null) {
+            System.out.println("Admin User found: " + adminUser.getName());
+        } else {
+            System.out.println("No Admin User found.");
+        }
+
+
 
 
         System.out.println("List of Users:");
@@ -53,14 +68,24 @@ Scanner scanner = new Scanner(System.in);
         boolean exit = false;
 
         while (!exit) {
-            System.out.println("Choose an option:");
-            System.out.println("1. Patients");
-            System.out.println("2. Services Offered");
-            System.out.println("3. Payments");
-            System.out.println("4. Chat");
-            System.out.println("5. Accounts");
-            System.out.println("6. Exit");
-            System.out.print("Enter your choice: ");
+            System.out.println("\033[0;34m"); // Blue color
+System.out.println("-----------------------------------------------------");
+System.out.println("|                  Main Menu                          |");
+System.out.println("-----------------------------------------------------");
+System.out.println("|                                                   |");
+System.out.println("| Choose an option:                                 |");
+System.out.println("|                                                   |");
+System.out.println("| \033[0;32m1. Patients\033[0;34m");
+System.out.println("| \033[0;32m2. Services Offered\033[0;34m");          
+System.out.println("| \033[0;32m3. Payments\033[0;34m");
+System.out.println("| \033[0;32m4. Chat\033[0;34m");
+System.out.println("| \033[0;32m5. Accounts\033[0;34m");
+System.out.println("| \033[0;32m6. Exit\033[0;34m");
+System.out.println("|                                                   |");
+System.out.println("-----------------------------------------------------");
+System.out.print("\033[0m"); // Reset color
+System.out.print("Enter your choice: ");
+
             int choice;
 
             // Validate input to ensure it's an integer
@@ -83,13 +108,10 @@ Scanner scanner = new Scanner(System.in);
                         // Add your Payments functionality here
                         break;
                     case 4:
-//                        chatView=new ChatView();
-//                        chatView.show();
-//                        InvoiceView invoiceView  = InvoiceView.getInstance();
-//                        invoiceView.displayInvoice();
-//                        System.out.println("You chose Chat.");
-                        // Add your Chat functionality here
+                        ChatView chatView = new ChatView(adminUser);
+                        chatView.getMenu();
 
+ 
                         break;
                     case 5:
                         System.out.println("You chose Accounts.");

@@ -1,6 +1,7 @@
 package views.patient;
 
 
+import java.util.Map;
 import java.util.Scanner;
 import models.patient.Patient;
 import repository.PatientRepositories.PatientRepository;
@@ -11,19 +12,23 @@ public class PatientView {
     private static Scanner scanner = new Scanner(System.in);
     // PatientRepository patientRepository = new PatientRepository();
     private static PatientRepository patientRepository = PatientRepository.getInstance();
+    Map<String, Patient> patientMap = patientRepository.patientsMap;
 
     private static PatientService patientService;
 
     public void choosePatientOption(){
 
         while (true) {
-            System.out.println("Menu:");
-            System.out.println("1. Register Patient");
-            System.out.println("2. View Patients");
-            System.out.println("3. Delete Patient");
-            System.out.println("4. Assign Service");
-            System.out.println("5. Exit");
-            System.out.print("Enter your choice: ");
+          System.out.println("\033[0;34m╔══════════════════════╗");
+System.out.println("║        Menu          ║");
+System.out.println("╠══════════════════════╣");
+System.out.println("║ 1. Register Patient  ║");
+System.out.println("║ 2. View Patients     ║");
+System.out.println("║ 3. Delete Patient    ║");
+System.out.println("║ 4. Assign Service    ║");
+System.out.println("║ 5. Exit              ║");
+System.out.println("╚══════════════════════╝");
+System.out.print("\033[0mEnter your choice: ");
 
             int choice;
             try {
@@ -34,6 +39,7 @@ public class PatientView {
                 scanner.nextLine(); // Consume newline character
                 continue;
             }
+            // ...
 
             switch (choice) {
                 case 1:
@@ -78,10 +84,8 @@ public class PatientView {
                     //create a table showing each patient details
 
                     System.out.println("List size "+patientRepository.getMapSize());
-                    System.out.println("Patient Name\tFacility Type\tDoctor Name");
-                    // for (Patient patient1: patientList){
-                    //     System.out.println(patient1.getName()+"\t"+patient1.getFacilityType()+"\t"+patient1.getDoctorName());
-                    // }
+            
+               
 
                     break;
                 case 3:
@@ -94,7 +98,7 @@ public class PatientView {
                     break;
                 case 5:
                     System.out.println("\nExiting...");
-                    scanner.close();
+                    // scanner.close();
                     return;
                 default:
                     System.out.println("\nInvalid choice. Please choose a number between 1 and 5.");

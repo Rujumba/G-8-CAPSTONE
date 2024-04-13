@@ -24,6 +24,6 @@ public class PatientRepository {
 
 
     public int getMapSize() {
-        return patientsMap.size();
+        return patientsMap.size(); 
     }
 }

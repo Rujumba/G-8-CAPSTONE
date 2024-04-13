@@ -9,6 +9,8 @@ public class DebugLogger {
 
     private static DebugLogger singleton = null;
 
+    private DebugLogger(){}
+
     public static DebugLogger getLogger() {
         if (singleton == null) {
             return new DebugLogger();

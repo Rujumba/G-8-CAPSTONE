@@ -7,7 +7,7 @@ import models.systemUsers.SystemUser;
 
 public class SystemUserRepository {
     private static SystemUserRepository instance;
-    private Map<String, SystemUser> users;
+    public  Map<String, SystemUser> users;
 
     private SystemUserRepository() {
         users = new HashMap<>();

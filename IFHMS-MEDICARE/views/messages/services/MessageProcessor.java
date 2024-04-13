@@ -8,7 +8,11 @@ import views.logger.services.DebugLogger;
 
 
 public class MessageProcessor implements MessageSender, GroupMessaginObserver {
-     public static MessageProcessor messageProcessorSingleton = null;
+    public static MessageProcessor messageProcessorSingleton = null;
+     
+    private MessageProcessor() {
+        
+    }
 
     public static MessageProcessor getMessageProcessor() {
         if (messageProcessorSingleton == null) {
@@ -23,7 +27,7 @@ public class MessageProcessor implements MessageSender, GroupMessaginObserver {
     DebugLogger logger = DebugLogger.getLogger();
 
     // Message to be sent
-    private Message message;
+    private Message message =new Message();
 
     // List of message observers (group members)
     private List<SystemUser> messageObservers = new ArrayList<>();
@@ -53,11 +57,11 @@ public class MessageProcessor implements MessageSender, GroupMessaginObserver {
     }
     
     @Override
-    public void sendGroupMessage(String messageString, String sender) {
+    public void sendGroupMessage(String messageString1, String sender) {
         // set message
-        setMessage(sender,messageString);
+        setMessage(sender,messageString1);
 
-        System.out.println("Messaged Received (SystemAdministrator): " + messageString);
+        System.out.println("Messaged Received (SystemAdministrator): " + messageString1);
     }
 @Override
     
