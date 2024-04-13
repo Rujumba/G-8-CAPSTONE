@@ -9,6 +9,7 @@ import views.accountReconcilation.services.GeneralLedgerService;
 import views.accountReconcilation.services.ReconciliationManager;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class AccountReconciliationView {
@@ -72,16 +73,13 @@ public class AccountReconciliationView {
                     case 3:
                         System.out.println("---------------Viewing General Ledger Entries-----------------");
 
-                        List<GeneralLedger> generalLedgerEntries = generalLedgerService.getAllGeneralLedgerEntries();
+                        Map<String,GeneralLedger> generalLedgerEntries = generalLedgerService.getAllGeneralLedgerEntries();
 
                         System.out.println("ID\t\tAmount\t\tDescription\t\tReconciled");
 
-                        if (generalLedgerEntries.isEmpty()) {
-                            System.out.println("No general ledger entries found.");
-                        } else {
-                            for (GeneralLedger generalLedgerEntry : generalLedgerEntries) {
-                                System.out.println(generalLedgerEntry.getId() + "\t\t" + generalLedgerEntry.getAmount() + "\t\t" + generalLedgerEntry.getDescription() + "\t\t" + generalLedgerEntry.isReconciled());
-                            }
+                        for (Map.Entry<String, GeneralLedger> entry : generalLedgerEntries.entrySet()) {
+                            GeneralLedger generalLedger = entry.getValue();
+                            System.out.println(generalLedger.getId() + "\t\t" + generalLedger.getAmount() + "\t\t" + generalLedger.getDescription() + "\t\t" + generalLedger.isReconciled());
                         }
                         break;
                     case 4:

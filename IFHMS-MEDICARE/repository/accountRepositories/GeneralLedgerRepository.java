@@ -6,48 +6,60 @@ import models.account.GeneralLedger;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class GeneralLedgerRepository {
     /**
-     * List of general ledger entries
+     * Map of general ledger entries
      */
-    private List<GeneralLedger> generalLedgerList= new ArrayList<>();;
+    public Map<String, GeneralLedger> generalLedgerMap;
+
+    private static GeneralLedgerRepository instance;
+
+    private GeneralLedgerRepository() {
+        // Private constructor to prevent instantiation
+    }
+
+    public static GeneralLedgerRepository getInstance() {
+        if (instance == null) {
+            synchronized (GeneralLedgerRepository.class) {
+                if (instance == null) {
+                    instance = new GeneralLedgerRepository();
+                }
+            }
+        }
+        return instance;
+    }
 
     /**
      * Adds to a file all the general ledger objects
      */
     public void addGeneralLedger(GeneralLedger generalLedger) {
-        String filename = "GeneralLedger2.dat";
 
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename, true))) {
-            oos.writeObject(generalLedger);
-            System.out.println("GeneralLedger object saved successfully.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String id = generalLedger.getId();
 
     }
 
     /**
      * Returns all general ledger entries for the file and stores them in a list
      */
-    public List<GeneralLedger> getAllGeneralLedgerEntries() {
+    // public List<GeneralLedger> getAllGeneralLedgerEntries() {
 
-        String filename = "GeneralLedger2.dat";
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
-            GeneralLedger generalLedger;
-            while ((generalLedger = (GeneralLedger) ois.readObject()) != null) {
-                generalLedgerList.add(generalLedger);
-            }
-        } catch (EOFException e) {
-            e.printStackTrace();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    //     String filename = "GeneralLedger2.dat";
+    //     try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
+    //         GeneralLedger generalLedger;
+    //         while ((generalLedger = (GeneralLedger) ois.readObject()) != null) {
+    //             generalLedgerList.add(generalLedger);
+    //         }
+    //     } catch (EOFException e) {
+    //         e.printStackTrace();
+    //     } catch (IOException | ClassNotFoundException e) {
+    //         e.printStackTrace();
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
 
-        return generalLedgerList;
-    }
+    //     return generalLedgerList;
+    // }
 
 }
