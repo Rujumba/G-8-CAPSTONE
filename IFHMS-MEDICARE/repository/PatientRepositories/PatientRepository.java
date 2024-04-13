@@ -1,23 +1,37 @@
 package repository.PatientRepositories;
 
+ 
+import java.util.HashMap;
+import java.util.Map;
 import models.patient.Patient;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class PatientRepository {
-    private List<Patient> patientsList = new ArrayList<>();
+    private static PatientRepository repoSingleton = null;
+    private Map<String, Patient> patientsMap;
 
-    public List<Patient> getPatientsList() {
-        return patientsList;
+    private PatientRepository() {
+        patientsMap = new HashMap<>();
     }
 
-    public void setPatientsList(List<Patient> patientsList) {
-        this.patientsList = patientsList;
+    public static PatientRepository getInstance() {
+        if (repoSingleton == null) {
+            repoSingleton = new PatientRepository();
+        }
+        return repoSingleton;
     }
 
-    public void addPatient(Patient patient){
-        patientsList.add(patient);
+    public Map<String, Patient> getPatientsMap() {
+        return patientsMap;
     }
-    
+
+    public void addPatient(String patientId, Patient patient) {
+        patientsMap.put(patientId, patient);
+    }
+
+
+    public int getMapSize() {
+        return patientsMap.size();
+    }
 }

@@ -1,13 +1,55 @@
-import views.accountReconcilation.AccountReconciliationView;
-import views.patient.PatientView;
-
 import java.util.Scanner;
+import models.systemUsers.SystemUser;
+import repository.systemUsersRepository.SystemUserRepository;
+import views.accountReconcilation.AccountReconciliationView;
+import views.logger.services.DebugLogger;
+import views.patient.PatientView;
+import views.systemUser.services.SystemUserCreator;
+
+
 
 public class MedicareLanding {
 
     public static void main(String[] args) {
+        SystemUserRepository userRepository = SystemUserRepository.getInstance();
 
-        Scanner scanner = new Scanner(System.in);
+
+SystemUserCreator userCreator = SystemUserCreator.getSystemUserCreator();
+DebugLogger logger = DebugLogger.getLogger();
+
+int userNumber;
+
+Scanner scanner = new Scanner(System.in);
+ logger.printInfo("-------- IHFMS MEDICARE--------");
+
+        System.out.println("Thanks for choosing IHFMS");
+        System.out.println();
+        System.out.println("As a system admin, enter how mnay users you want to create");
+        userNumber = scanner.nextInt();
+        if (userNumber > 0 && userNumber < 4) {
+            for (var i = 0; i < userNumber; i++) {
+                SystemUser user = null;
+
+                while (user == null) {
+                    System.out.println(
+                            "Enter the type of user you want to create (AD for admin, HC for Healthcare provider, FI for Chief Finance Officer):");
+                    String userType = scanner.next();
+                    user = userCreator.createUser(userType);
+                }
+                System.out.println("Enter username please........");
+
+                String username = scanner.next();
+                user.setName(username);
+                userRepository.addUser(user);
+            }
+
+        }
+
+
+        System.out.println("List of Users:");
+
+        userRepository.printUsers();
+        
         boolean exit = false;
 
         while (!exit) {

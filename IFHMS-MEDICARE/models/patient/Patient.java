@@ -1,10 +1,10 @@
 package models.patient;
 
-import java.util.List;
+import java.util.UUID;
 
 public class Patient {
 
-    private Long id;
+    private String id;
 
     private String name;
 
@@ -15,6 +15,10 @@ public class Patient {
     private String doctorName;
 
     private String prescription;
+        
+public Patient() {
+    this.id = UUID.randomUUID().toString();
+}
 
     public String getService() {
         return service;
@@ -26,19 +30,12 @@ public class Patient {
 
     public String service;
 
-    //Getters and setters
-    public void setId(Long id) {
-        this.id = id;
-    }
+   
+public String getId() {
+    return id;
+}
 
-    public Long getId() {
-        return id;
-    }
-
-
-    public String getName() {
-        return name;
-    }
+      
 
     public void setName(String name) {
         this.name = name;

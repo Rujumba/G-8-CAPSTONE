@@ -1,16 +1,16 @@
 package views.patient;
 
 
+import java.util.Scanner;
 import models.patient.Patient;
 import repository.PatientRepositories.PatientRepository;
 import views.patient.services.PatientFactory;
 
-import java.util.List;
-import java.util.Scanner;
 
 public class PatientView {
     private static Scanner scanner = new Scanner(System.in);
-    PatientRepository patientRepository = new PatientRepository();
+    // PatientRepository patientRepository = new PatientRepository();
+    private static PatientRepository patientRepository = PatientRepository.getInstance();
 
     private static PatientService patientService;
 
@@ -48,20 +48,22 @@ public class PatientView {
                         selectedFacility = scanner.nextInt();
 
 
-                        switch (selectedFacility){
+                       switch (selectedFacility) {
                             case 1:
                                 patientService = PatientFactory.createService("hospital");
                                 patientService.savePatient(new Patient());
-
                                 break;
                             case 2:
                                 patientService = PatientFactory.createService("clinic");
                                 patientService.savePatient(new Patient());
+                                break;
                             case 3:
                                 patientService = PatientFactory.createService("clinic");
                                 patientService.savePatient(new Patient());
+                                break;
                             default:
                                 System.out.println("Wrong option selected");
+                                break;
                         }
                     }catch (Exception e){
                         System.out.println("Invalid choice. Please choose a number between 1 and 5.");
@@ -71,15 +73,15 @@ public class PatientView {
 
                     break;
                 case 2:
-                    List<Patient> patientsList = patientService.getAllPatients();
+                    // List<Patient> patientsList = patientService.getAllPatients();
                     System.out.println("-------------------------Patients----------------------");
                     //create a table showing each patient details
 
-                    System.out.println("List size "+patientsList.size());
+                    System.out.println("List size "+patientRepository.getMapSize());
                     System.out.println("Patient Name\tFacility Type\tDoctor Name");
-                    for (Patient patient1: patientsList){
-                        System.out.println(patient1.getName()+"\t"+patient1.getFacilityType()+"\t"+patient1.getDoctorName());
-                    }
+                    // for (Patient patient1: patientList){
+                    //     System.out.println(patient1.getName()+"\t"+patient1.getFacilityType()+"\t"+patient1.getDoctorName());
+                    // }
 
                     break;
                 case 3:
@@ -105,13 +107,13 @@ public class PatientView {
             private static void deletePatient() {
                 while (true) {
                     // Retrieve the list of patients
-                    List<Patient> patientsList = patientService.getAllPatients();
+                    // List<Patient> patientsList = patientService.getAllPatients();
                     
                     // Display the list of patients with their IDs
                     System.out.println("List of Patients:");
-                    for (int i = 0; i < patientsList.size(); i++) {
-                        System.out.println((i + 1) + ". " + patientsList.get(i).getName());
-                    }
+                    // for (int i = 0; i < patientList.size(); i++) {
+                    //     System.out.println((i + 1) + ". " + patientList.get(i).getName());
+                    // }
                     
                     // Prompt the user to enter the ID of the patient to delete
                     System.out.print("Enter the ID of the patient to delete (or 0 to cancel): ");
@@ -125,27 +127,31 @@ public class PatientView {
                     }
                     
                     // Check if the entered ID is valid
-                    if (patientIdToDelete >= 1 && patientIdToDelete <= patientsList.size()) {
-                        // Confirm deletion
-                        System.out.print("Are you sure you want to delete this patient? (yes/no): ");
-                        String confirmation = scanner.nextLine().trim().toLowerCase();
+                    // if (patientIdToDelete >= 1 && patientIdToDelete <= patientList.size()) {
+                    //     // Confirm deletion
+                    //     System.out.print("Are you sure you want to delete this patient? (yes/no): ");
+                    //     String confirmation = scanner.nextLine().trim().toLowerCase();
                         
-                        if (confirmation.equals("yes")) {
-                            // Call the deletePatient method from PatientService
-                            patientService.deletePatient(patientsList.get(patientIdToDelete - 1).getId());
-                            System.out.println("Patient deleted successfully.");
-                            return;
-                        } else if (confirmation.equals("no")) {
-                            System.out.println("Deletion cancelled.");
-                            return;
-                        } else {
-                            System.out.println("Invalid input. Please enter 'yes' or 'no'.");
-                        }
-                    } else {
-                        System.out.println("Invalid patient ID. Please try again.");
-                    }
+                    //     if (confirmation.equals("yes")) {
+                    //         // Call the deletePatient method from PatientService
+                    //         // patientService.deletePatient(patientList.get(patientIdToDelete - 1).getId());
+                    //         System.out.println("Patient deleted successfully.");
+                    //         return;
+                    //     } else if (confirmation.equals("no")) {
+                    //         System.out.println("Deletion cancelled.");
+                    //         return;
+                    //     } else {
+                    //         System.out.println("Invalid input. Please enter 'yes' or 'no'.");
+                    //     }
+                    // } else {
+                    //     System.out.println("Invalid patient ID. Please try again.");
+                    // }
                 }
             }
             
             
 }
+
+
+
+ 
