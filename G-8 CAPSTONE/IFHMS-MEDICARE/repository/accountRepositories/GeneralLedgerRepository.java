@@ -1,6 +1,7 @@
 package repository.accountRepositories;
 
-import sdp.models.account.GeneralLedger;
+
+import models.account.GeneralLedger;
 
 import java.io.*;
 import java.util.ArrayList;

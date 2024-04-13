@@ -1,7 +1,7 @@
 package repository.accountRepositories;
 
 
-import sdp.models.account.AccountPayable;
+import models.account.AccountPayable;
 
 import java.util.ArrayList;
 import java.util.List;
