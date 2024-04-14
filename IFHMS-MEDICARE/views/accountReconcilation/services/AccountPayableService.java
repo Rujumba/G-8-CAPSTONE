@@ -5,8 +5,7 @@ import models.account.AccountPayable;
 import models.account.GeneralLedger;
 import repository.accountRepositories.AccountPayableRepository;
 import views.accountReconcilation.ReconciliationStrategy;
-
-import java.util.List;
+import java.util.Map;
 
 
 public class AccountPayableService implements ReconciliationStrategy {
@@ -15,7 +14,8 @@ public class AccountPayableService implements ReconciliationStrategy {
 
     private GeneralLedgerService generalLedgerService = new GeneralLedgerService();
 
-    private AccountPayableRepository accountPayableRepository = new AccountPayableRepository();
+    private AccountPayableRepository accountPayableRepository = AccountPayableRepository.getInstance();
+    Map<String, AccountPayable> accountPayableMap = accountPayableRepository.getAllAccountPayableEntries();
 
     /**
      * Implements the reconcile method in the ReconciliationStrategy interface
@@ -47,7 +47,7 @@ public class AccountPayableService implements ReconciliationStrategy {
     /**
      * Returns all account payables
      */
-    public List<AccountPayable> getAllAccountPayableEntries(){
+    public Map<String,AccountPayable> getAllAccountPayableEntries(){
         return accountPayableRepository.getAllAccountPayableEntries();
     }
 
@@ -67,7 +67,7 @@ public class AccountPayableService implements ReconciliationStrategy {
      * Returns the account payable by id
      */
     public AccountPayable getById(String id){
-        return accountPayableRepository.getAccountPayableById(id);
+        return accountPayableMap.get(id);
     }
 
 }

@@ -2,12 +2,9 @@ package repository.accountRepositories;
 
 
 import models.account.AccountReceivable;
-import models.patient.Patient;
-import repository.PatientRepositories.PatientRepository;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+
 import java.util.Map;
 
 public class AccountReceivableRepository {

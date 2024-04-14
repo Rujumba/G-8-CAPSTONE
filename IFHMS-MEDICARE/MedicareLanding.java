@@ -6,85 +6,52 @@ import views.accountReconcilation.AccountReconciliationView;
 import views.logger.services.DebugLogger;
 import views.messages.ChatView;
 import views.patient.PatientView;
-import views.systemUser.services.SystemUserCreator;
+import views.systemUser.SystemUserView;
+
 
 
 
 public class MedicareLanding {
+          public static final String ANSI_RESET = "\u001B[0m";
+public static final String ANSI_CYAN = "\u001B[36m";
+public static final String ANSI_BOLD = "\u001B[1m";
 
     public static void main(String[] args) {
-        SystemUserRepository userRepository = SystemUserRepository.getInstance();
-        Map<String, SystemUser> users = userRepository.users;
+        SystemUserRepository systemUserRepository = SystemUserRepository.getInstance();
 
-
-SystemUserCreator userCreator = SystemUserCreator.getSystemUserCreator();
-DebugLogger logger = DebugLogger.getLogger();
-
-int userNumber;
-
-Scanner scanner = new Scanner(System.in);
- logger.printInfo("-------- IHFMS MEDICARE--------");
-
-        System.out.println("Thanks for choosing IHFMS");
-        System.out.println();
-        System.out.println("As a system admin, enter how mnay users you want to create");
-        userNumber = scanner.nextInt();
-        if (userNumber > 0 && userNumber < 4) {
-            for (var i = 0; i < userNumber; i++) {
-                SystemUser user = null;
-
-                while (user == null) {
-                    System.out.println(
-                            "Enter the type of user you want to create (AD for admin, HC for Healthcare provider, FI for Chief Finance Officer):");
-                    String userType = scanner.next();
-                    user = userCreator.createUser(userType);
-                }
-                System.out.println("Enter username please........");
-
-                String username = scanner.next();
-                user.setName(username);
-                userRepository.addUser(user);
-            }
-
-        }
-        SystemUser adminUser = users.values().stream()
-            .filter(user -> user.getRole().equalsIgnoreCase("AD"))
-            .findFirst()
-            .orElse(null);
-
-        if (adminUser != null) {
-            System.out.println("Admin User found: " + adminUser.getName());
-        } else {
-            System.out.println("No Admin User found.");
-        }
-
-
-
-
-        System.out.println("List of Users:");
-
-        userRepository.printUsers();
+      Map<String, SystemUser> users = systemUserRepository.users;
+  
+      Scanner scanner = new Scanner(System.in);
         
+
+
+System.out.println(ANSI_CYAN + ANSI_BOLD + "Welcome to the Integrated Health Finance Management System (IHFMS) - Medicare" + ANSI_RESET);
+System.out.println("--------------------------------------------------");
+System.out.println("This system integrates health information systems with finance, accounts, and messaging functionalities to streamline operations and enhance internal communication.");
+System.out.println("--------------------------------------------------");
+System.out.println("Please select an option from the menu:");
+
         boolean exit = false;
 
         while (!exit) {
             System.out.println("\033[0;34m"); // Blue color
-System.out.println("-----------------------------------------------------");
-System.out.println("|                  Main Menu                          |");
-System.out.println("-----------------------------------------------------");
-System.out.println("|                                                   |");
-System.out.println("| Choose an option:                                 |");
-System.out.println("|                                                   |");
-System.out.println("| \033[0;32m1. Patients\033[0;34m");
-System.out.println("| \033[0;32m2. Services Offered\033[0;34m");          
-System.out.println("| \033[0;32m3. Payments\033[0;34m");
-System.out.println("| \033[0;32m4. Chat\033[0;34m");
-System.out.println("| \033[0;32m5. Accounts\033[0;34m");
-System.out.println("| \033[0;32m6. Exit\033[0;34m");
-System.out.println("|                                                   |");
-System.out.println("-----------------------------------------------------");
-System.out.print("\033[0m"); // Reset color
-System.out.print("Enter your choice: ");
+            System.out.println("-----------------------------------------------------");
+            System.out.println("|                  Main Menu                          |");
+            System.out.println("-----------------------------------------------------");
+            System.out.println("|                                                   |");
+            System.out.println("| Choose an option:                                 |");
+            System.out.println("|                                                   |");
+            System.out.println("| \033[0;32m1. System Users\033[0;34m");
+            System.out.println("| \033[0;32m2. Patients\033[0;34m");
+            System.out.println("| \033[0;32m3. Services Offered\033[0;34m");          
+            System.out.println("| \033[0;32m4. Payments\033[0;34m");
+            System.out.println("| \033[0;32m5. Chat\033[0;34m");
+            System.out.println("| \033[0;32m6. Accounts\033[0;34m");
+            System.out.println("| \033[0;32m7. Exit\033[0;34m");
+            System.out.println("|                                                   |");
+            System.out.println("-----------------------------------------------------");
+            System.out.print("\033[0m"); // Reset color
+            System.out.print("Enter your choice: ");
 
             int choice;
 
@@ -94,36 +61,46 @@ System.out.print("Enter your choice: ");
                 scanner.nextLine(); // Consume newline character
                 switch (choice) {
                     case 1:
-                        PatientView patientView = new PatientView();
-                        patientView.choosePatientOption();
+                        SystemUserView systemUserView = new SystemUserView();
+                        systemUserView.showMenu();
                         break;
                     case 2:
-//                        System.out.println("You chose Services Offered.");
-//                        MedicalServiceView newView = new MedicalServiceView();
-//                        newView.displayMedicalService();
+//                        System.out.println("You chose Patients.");
+                       PatientView patientView = new PatientView();
+                       patientView.choosePatientOption();
                         break;
                     case 3:
+                        System.out.println("You chose Services Offered.");
+
+                        // Add your Services Offered functionality here
+                        break;
+                    case 4:
                         System.out.println("You chose Payments.");
 
                         // Add your Payments functionality here
                         break;
-                    case 4:
+                    case 5:
+                     SystemUser adminUser = users.values().stream().filter(user -> user.getRole().equalsIgnoreCase("AD")).findFirst()
+                .orElse(null);
+
+        if (adminUser != null) {
+            System.out.println("Admin User found: " + adminUser.getName());
+        } 
                         ChatView chatView = new ChatView(adminUser);
                         chatView.getMenu();
 
- 
                         break;
-                    case 5:
+                    case 6:
                         System.out.println("You chose Accounts.");
                         AccountReconciliationView accountReconciliationView = new AccountReconciliationView();
                         accountReconciliationView.displayReconciliationView();
                         break;
-                    case 6:
+                    case 7:
                         System.out.println("Exiting...");
                         exit = true;
                         break;
                     default:
-                        System.out.println("Invalid choice. Please enter a number between 1 and 6.");
+                        System.out.println("Invalid choice. Please enter a number between 1 and 7.");
                 }
             } else {
                 System.out.println("Invalid choice. Please enter a valid number.");

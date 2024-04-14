@@ -12,7 +12,7 @@ public class GeneralLedgerService {
 
     GeneralLedgerRepository generalLedgerRepository2 = GeneralLedgerRepository.getInstance();
 
-    Map<String, GeneralLedger> generalLedgerEntries = generalLedgerRepository2.generalLedgerMap;
+    Map<String, GeneralLedger> generalLedgerEntries = generalLedgerRepository2.getAllGeneralLedgerEntries();
     DebugLogger logger = DebugLogger.getLogger();
 
     /**
@@ -28,7 +28,7 @@ public class GeneralLedgerService {
     }
 
     public Map<String, GeneralLedger> getAllGeneralLedgerEntries() {
-        return generalLedgerEntries;
+        return this.generalLedgerEntries;
    }
 
     /**

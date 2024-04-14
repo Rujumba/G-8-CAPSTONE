@@ -8,28 +8,35 @@ import views.accountReconcilation.services.AccountReceivableService;
 import views.accountReconcilation.services.GeneralLedgerService;
 import views.accountReconcilation.services.ReconciliationManager;
 
-import java.util.List;
+
 import java.util.Map;
 import java.util.Scanner;
 
 public class AccountReconciliationView {
 
+    public static final String ANSI_RESET = "\u001B[0m";
+public static final String ANSI_BLUE = "\u001B[34m";
+public static final String ANSI_CYAN = "\u001B[36m";
+public static final String ANSI_GREEN = "\u001B[32m";
+
     AccountPayableService accountPayableService = new AccountPayableService();
     AccountReceivableService accountReceivableService = new AccountReceivableService();
 
-    GeneralLedgerService generalLedgerService = new GeneralLedgerService();
+    public static GeneralLedgerService generalLedgerService = new GeneralLedgerService();
+Map<String, GeneralLedger> generalLedgerEntries = generalLedgerService.getAllGeneralLedgerEntries();
 
 
     public void displayReconciliationView(){
-        System.out.println("-------------Displaying Account Reconciliation View--------------------");
-        //write code to display options to add or view entries of accountPayable and accountReceivable then also view general ledger entries
-
-        System.out.println("1. Add Account Payable Entry");
-        System.out.println("2. Add Account Receivable Entry");
-        System.out.println("3. View General Ledger Entries");
-        System.out.println("4.View Account Payable Entries");
-        System.out.println("5.View Account Receivable Entries");
-        System.out.println("6. Exit");
+System.out.println(ANSI_CYAN + "╔════════════════════════════════════════════════════════════════╗");
+System.out.println("║                  Account Reconciliation View                    ║");
+System.out.println("╠════════════════════════════════════════════════════════════════╣");
+System.out.println("║ " + ANSI_GREEN + "1. Add Account Payable Entry" + ANSI_CYAN + "                                    ║");
+System.out.println("║ " + ANSI_GREEN + "2. Add Account Receivable Entry" + ANSI_CYAN + "                                 ║");
+System.out.println("║ " + ANSI_GREEN + "3. View General Ledger Entries" + ANSI_CYAN + "                                  ║");
+System.out.println("║ " + ANSI_GREEN + "4. View Account Payable Entries" + ANSI_CYAN + "                                 ║");
+System.out.println("║ " + ANSI_GREEN + "5. View Account Receivable Entries" + ANSI_CYAN + "                              ║");
+System.out.println("║ " + ANSI_BLUE + "6. Exit" + ANSI_CYAN + "                                                          ║");
+System.out.println("╚════════════════════════════════════════════════════════════════╝" + ANSI_RESET);
 
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;
@@ -55,6 +62,9 @@ public class AccountReconciliationView {
                         accountPayable.setAmount(scanner.nextDouble());
 
                         accountPayableService.saveAccountPayable(accountPayable);
+                        displayReconciliationView();
+
+
 
                         break;
                     case 2:
@@ -68,46 +78,52 @@ public class AccountReconciliationView {
                         accountReceivable.setAmount(scanner.nextDouble());
 
                         accountReceivableService.saveToAccountsReceivable(accountReceivable);
+                        displayReconciliationView();
+
 
                         break;
                     case 3:
                         System.out.println("---------------Viewing General Ledger Entries-----------------");
 
-                        Map<String,GeneralLedger> generalLedgerEntries = generalLedgerService.getAllGeneralLedgerEntries();
-
                         System.out.println("ID\t\tAmount\t\tDescription\t\tReconciled");
 
                         for (Map.Entry<String, GeneralLedger> entry : generalLedgerEntries.entrySet()) {
                             GeneralLedger generalLedger = entry.getValue();
-                            System.out.println(generalLedger.getId() + "\t\t" + generalLedger.getAmount() + "\t\t" + generalLedger.getDescription() + "\t\t" + generalLedger.isReconciled());
+                            System.out.println(generalLedger.getId() + "\t\t" + generalLedger.getAmount() + "\t\t"
+                                    + generalLedger.getDescription() + "\t\t" + generalLedger.isReconciled());
                         }
+                        displayReconciliationView();
+                        
                         break;
                     case 4:
                         System.out.println("----------------Viewing Account Payable Entries-----------------");
 
-                        List<AccountPayable> accountPayableEntries = accountPayableService.getAllAccountPayableEntries();
+                        Map<String,AccountPayable> accountPayableEntries = accountPayableService.getAllAccountPayableEntries();
 
                         System.out.println("ID\t\tAmount\t\tDescription\t\tReconciled");
 
                         if (accountPayableEntries.isEmpty()) {
                             System.out.println("No account payable entries found.");
                         } else {
-                            for (AccountPayable accountPayableEntry : accountPayableEntries) {
+                            for (AccountPayable accountPayableEntry : accountPayableEntries.values()) {
                                 System.out.println(accountPayableEntry.getId() + "\t\t" + accountPayableEntry.getAmount() + "\t\t" + accountPayableEntry.getDescription() + "\t\t" + accountPayableEntry.isReconciled());
                             }
                         }
 
                         System.out.println("Would you like to reconcile an account payable entry? (Y/N)");
                         String reconcileChoice = scanner.nextLine();
-                        if (reconcileChoice.equalsIgnoreCase("N")){
+                        if (reconcileChoice.equalsIgnoreCase("N")) {
+                        displayReconciliationView();
+                            
                             break;
                         }
 
                         System.out.println("Enter the ID of the account payable entry you want to reconcile: ");
                         String id = scanner.nextLine();
-                        AccountPayable accountPayableToReconcile = accountPayableService.getById(id);
+                        AccountPayable accountPayableToReconcile = accountPayableService.getById(id.toUpperCase());
                         reconcileAccountPayable(accountPayableToReconcile);
                         System.out.println("Account payable entry reconciled successfully.");
+                        displayReconciliationView();
 
                         break;
                     case 5:
@@ -125,15 +141,18 @@ public class AccountReconciliationView {
 
                         System.out.println("Would you like to reconcile an account receivable entry? (Y/N)");
                         reconcileChoice = scanner.nextLine();
-                        if (reconcileChoice.equalsIgnoreCase("N")){
+                        if (reconcileChoice.equalsIgnoreCase("N")) {
+                        displayReconciliationView();
+                            
                             break;
                         }
 
                         System.out.println("Enter the ID of the account receivable entry you want to reconcile: ");
                         id = scanner.nextLine();
-                        AccountReceivable accountReceivableToReconcile = accountReceivableService.getById(id);
+                        AccountReceivable accountReceivableToReconcile = accountReceivableService.getById(id.toUpperCase());
                         reconcileAccountReceivable(accountReceivableToReconcile);
                         System.out.println("Account receivable entry reconciled successfully.");
+                        displayReconciliationView();
 
                         break;
                     case 6:

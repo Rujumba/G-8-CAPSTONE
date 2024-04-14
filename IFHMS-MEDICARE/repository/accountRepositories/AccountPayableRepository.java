@@ -3,64 +3,70 @@ package repository.accountRepositories;
 
 import models.account.AccountPayable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AccountPayableRepository {
 
-    private List<AccountPayable> accountPayablesList = new ArrayList<>();
+    private Map<String, AccountPayable> accountPayableMap;
+
+    private AccountPayableRepository() {
+        this.accountPayableMap = new HashMap<>();
+
+    }
+    private static AccountPayableRepository instance;
+
+    public static AccountPayableRepository getInstance() {
+        if (instance == null) {
+            synchronized (AccountPayableRepository.class) {
+                if (instance == null) {
+                    instance = new AccountPayableRepository();
+                }
+            }
+        }
+        return instance;
+    }
+
 
     /**
      * Adds to the list of account payables
      */
     public void addAccountPayable(AccountPayable accountPayable) {
-        accountPayablesList.add(accountPayable);
+        accountPayableMap.put(accountPayable.getId(), accountPayable);
+
     }
 
     /**
      * Returns all account payables
      */
-    public List<AccountPayable> getAllAccountPayableEntries() {
-        return accountPayablesList;
+    public Map<String,AccountPayable> getAllAccountPayableEntries() {
+        return accountPayableMap;
     }
 
     /**
      * Removes an account payable from the list
      */
     public void removeFromAccountPayable(AccountPayable accountPayable) {
-        accountPayablesList.remove(accountPayable);
+        accountPayableMap.remove(accountPayable.getId());
     }
 
     /**
      * Updates the account payable
      */
     public void updateAccountPayable(AccountPayable accountPayable) {
-        for (AccountPayable ap : accountPayablesList) {
-            if (ap.getId() == accountPayable.getId()) {
-                ap.setReconciled(accountPayable.isReconciled());
-            }
+        AccountPayable existingAccountPayable = accountPayableMap.get(accountPayable.getId());
+        if (existingAccountPayable != null) {
+            existingAccountPayable.setReconciled(accountPayable.isReconciled());
         }
     }
 
-    /**
-     * Getters and Setters
-     */
-    public List<AccountPayable> getAccountPayablesList() {
-        return accountPayablesList;
-    }
-
-    public void setAccountPayablesList(List<AccountPayable> accountPayablesList) {
-        this.accountPayablesList = accountPayablesList;
-    }
+   
+    
 
     //method to return the account payable by id and ignore the case
     public AccountPayable getAccountPayableById(String id) {
-        for (AccountPayable ap : accountPayablesList) {
-            if (ap.getId().equalsIgnoreCase(id)) {
-                return ap;
-            }
-        }
-        return null;
+        return accountPayableMap.get(id.toLowerCase());
+
     }
 
 }
