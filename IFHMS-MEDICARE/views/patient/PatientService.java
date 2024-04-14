@@ -1,54 +1,54 @@
 package views.patient;
 
+import java.util.Map;
 import models.patient.Patient;
 import repository.PatientRepositories.PatientRepository;
 
-import java.util.List;
+// import repository.PatientRepositories.patientList;
+
 
 public abstract class PatientService {
-    private final PatientRepository patientRepository = new PatientRepository();
+    PatientRepository patientRepository = PatientRepository.getInstance();
 
+
+    Map<String, Patient> patientsMap = patientRepository.patientsMap;
 
     public void savePatient(Patient patient) {
-
+        patientsMap.put(patient.getId(), patient);
     }
 
+    public Map<String, Patient> getPatientsMap() {
+        return  patientsMap;
+    }
+
+    public void addPatient(String patientId, Patient patient) {
+        patientsMap.put(patientId, patient);
+    }
     public void updatePatient(Patient patient) {
-        // Find the patient in the list and update its details
-        for (int i = 0; i < patientRepository.getPatientsList().size(); i++) {
-            if (patientRepository.getPatientsList().get(i).getId().equals(patient.getId())) {
-                patientRepository.getPatientsList().set(i, patient);
-                break;
-            }
+        // Find the patient in the map and update its details
+        if (patientsMap.containsKey(patient.getId())) {
+            patientsMap.put(patient.getId(), patient);
         }
     }
 
-    public void deletePatient(long patientId) {
-        // Find the patient in the list and remove it
-        patientRepository.getPatientsList().removeIf(patient -> patient.getId().equals(patientId));
+    public void deletePatient(String patientId) {
+        patientsMap.remove(patientId);
     }
 
     public Patient findPatientById(String patientId) {
         // Find and return the patient with the specified ID
-        for (Patient patient : patientRepository.getPatientsList()) {
-            if (patient.getId().equals(patientId)) {
-                return patient;
-            }
-        }
-        return null; // Patient not found
+        return patientsMap.get(patientId);
     }
 
-    public List<Patient> getAllPatients() {
-        return patientRepository.getPatientsList();
+    public boolean isPatientExists(String patientId) {
+        // Check if patient exists in the patientsMap
+        return patientsMap.containsKey(patientId);
     }
 
-    public boolean isPatientExists(long patientId) {
-        // Check if patient exists by iterating over the list
-        return patientRepository.getPatientsList().stream().anyMatch(patient -> patient.getId().equals(patientId));
-    }
 
     public int getTotalPatientCount() {
-        return patientRepository.getPatientsList().size();
+        return patientsMap.size();
     }
+ 
 }
 

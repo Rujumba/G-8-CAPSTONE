@@ -1,16 +1,17 @@
 package views.patient.services;
 
+import java.util.List;
+import java.util.Scanner;
 import models.patient.Patient;
 import repository.PatientRepositories.PatientRepository;
 import views.patient.PatientService;
 
-
-import java.util.List;
-import java.util.Scanner;
-
 public class ClinicPatientService extends PatientService {
-    PatientRepository patientRepository = new PatientRepository();
+    PatientRepository patientRepository = PatientRepository.getInstance();
+   
 
+
+    @Override
     public void savePatient(Patient patient) {
         Scanner scanner = new Scanner(System.in);
 
@@ -19,10 +20,17 @@ public class ClinicPatientService extends PatientService {
 
         System.out.println("Enter Doctors Name");
         patient.setDoctorName(scanner.nextLine());
+        String patientId = patient.getId();
 
-        patient.setFacilityType("CLINIC");
 
-        patientRepository.addPatient(patient);
+addPatient(patientId, patient);
+        String message = patient.toString();
+
+        System.out.print(message);
+        System.out.print("dahvjebhjlbawuebwfa");
+
+
+        // scanner.close();
 
     }
 

@@ -3,57 +3,34 @@ package repository.accountRepositories;
 
 import models.account.AccountReceivable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+
+import java.util.Map;
 
 public class AccountReceivableRepository {
-    /**
-     * List of account receivables
-     */
-    private List<AccountReceivable> accountReceivablesList = new ArrayList<>();
 
-    /**
-     * Adds to the list of account receivables
-     */
-    public void addAccountReceivable(AccountReceivable accountReceivable) {
-        accountReceivablesList.add(accountReceivable);
+    private static AccountReceivableRepository accountReceivableRepository = null;
+    public Map<String, AccountReceivable> accountReceivablesList;
+
+    private AccountReceivableRepository() {
+        accountReceivablesList = new HashMap<>();
     }
 
-    /**
-     * Returns the account receivable by id
-     */
-    public AccountReceivable getById(String id) {
-        for (AccountReceivable ar : accountReceivablesList) {
-            if (ar.getId().equalsIgnoreCase(id)) {
-                return ar;
-            }
+    public static AccountReceivableRepository getInstance() {
+        if (accountReceivableRepository == null) {
+            accountReceivableRepository = new AccountReceivableRepository();
         }
-        return null;
+        return accountReceivableRepository;
     }
 
-    /**
-     * Updates the account receivable
-     */
+
+    public int getMapSize() {
+        return accountReceivablesList.size();
+    }
+
+    //update a patient
     public void updateAccountReceivable(AccountReceivable accountReceivable) {
-        for (AccountReceivable ar : accountReceivablesList) {
-            if (ar.getId() == accountReceivable.getId()) {
-                ar.setReconciled(accountReceivable.isReconciled());
-            }
-        }
-    }
-
-    /**
-     * Returns all account receivables
-     */
-    public List<AccountReceivable> getAllAccountReceivableEntries() {
-        return accountReceivablesList;
-    }
-
-    /**
-     * Removes an account receivable from the list
-     */
-    public void removeFromAccountReceivable(AccountReceivable accountReceivable) {
-        accountReceivablesList.remove(accountReceivable);
+        accountReceivablesList.put(accountReceivable.getId(), accountReceivable);
     }
 
 }

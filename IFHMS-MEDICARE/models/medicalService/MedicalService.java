@@ -3,6 +3,15 @@ package models.medicalService;
 public class MedicalService {
     private String serviceName;
     private double servicePrice;
+    private String serviceId;
+
+    public void setServiceId(String serviceId) {
+        this.serviceId = serviceId;
+    }
+
+    public String getServiceId() {
+        return serviceId;
+    }
 
     public String getServiceName() {
         return serviceName;
@@ -21,8 +30,9 @@ public class MedicalService {
     }
 
 
-    public MedicalService(String serviceName, double servicePrice) {
+    public MedicalService(String serviceName, double servicePrice, String serviceId) {
         this.serviceName = serviceName;
         this.servicePrice = servicePrice;
+        this.serviceId = serviceId;
     }
 }

@@ -1,17 +1,15 @@
 package views.patient.services;
 
 
-import models.patient.Patient;
-import repository.PatientRepositories.PatientRepository;
-import views.patient.PatientService;
-
 import java.util.List;
 import java.util.Scanner;
+import models.patient.Patient;
+import views.patient.PatientService;
+
 
 public class PharmacyPatientService extends PatientService {
 
-    PatientRepository patientRepository = new PatientRepository();
-
+    @Override
     public void savePatient(Patient patient) {
         Scanner scanner = new Scanner(System.in);
 
@@ -22,8 +20,9 @@ public class PharmacyPatientService extends PatientService {
         patient.setPrescription(scanner.nextLine());
 
         patient.setFacilityType("PHARMACY");
+         String patientId = patient.getId();
 
-        patientRepository.addPatient(patient);
+         addPatient(patientId, patient);
 
     }
 

@@ -4,50 +4,39 @@ package repository.accountRepositories;
 import models.account.GeneralLedger;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GeneralLedgerRepository {
     /**
-     * List of general ledger entries
+     * Map of general ledger entries
      */
-    private List<GeneralLedger> generalLedgerList= new ArrayList<>();;
+    private Map<String, GeneralLedger> generalLedgerMap;
 
-    /**
-     * Adds to a file all the general ledger objects
-     */
-    public void addGeneralLedger(GeneralLedger generalLedger) {
-        String filename = "GeneralLedger2.dat";
+    private static GeneralLedgerRepository instance;
 
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
-            oos.writeObject(generalLedger);
-            System.out.println("GeneralLedger object saved successfully.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    private GeneralLedgerRepository() {
+        generalLedgerMap = new HashMap<>();
     }
 
-    /**
-     * Returns all general ledger entries for the file and stores them in a list
-     */
-    public List<GeneralLedger> getAllGeneralLedgerEntries() {
-
-        String filename = "GeneralLedger2.dat";
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
-            GeneralLedger generalLedger;
-            while ((generalLedger = (GeneralLedger) ois.readObject()) != null) {
-                generalLedgerList.add(generalLedger);
+    public static GeneralLedgerRepository getInstance() {
+        if (instance == null) {
+            synchronized (GeneralLedgerRepository.class) {
+                if (instance == null) {
+                    instance = new GeneralLedgerRepository();
+                }
             }
-        } catch (EOFException e) {
-            e.printStackTrace();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
-        return generalLedgerList;
+        return instance;
     }
+
+
+
+
+    public Map<String, GeneralLedger> getAllGeneralLedgerEntries() {
+        return this.generalLedgerMap;
+  }
+
+ 
 
 }
