@@ -1,9 +1,9 @@
 package repository.medicalServiceRepository;
 
-import models.medicalService.MedicalService;
-
 import java.util.HashMap;
 import java.util.Map;
+import models.medicalService.MedicalService;
+
 
 public class MedicalServices {
 

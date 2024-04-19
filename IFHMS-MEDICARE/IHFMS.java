@@ -3,7 +3,6 @@ import java.util.Scanner;
 import models.systemUsers.SystemUser;
 import repository.systemUsersRepository.SystemUserRepository;
 import views.accountReconcilation.AccountReconciliationView;
-import views.logger.services.DebugLogger;
 import views.messages.ChatView;
 import views.patient.PatientView;
 import views.systemUser.SystemUserView;
@@ -11,7 +10,8 @@ import views.systemUser.SystemUserView;
 
 
 
-public class MedicareLanding {
+
+public class IHFMS {
           public static final String ANSI_RESET = "\u001B[0m";
 public static final String ANSI_CYAN = "\u001B[36m";
 public static final String ANSI_BOLD = "\u001B[1m";
